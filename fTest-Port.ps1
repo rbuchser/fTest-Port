@@ -116,7 +116,9 @@ Function fTest-Port {
 		}
 	}
 	
-	fConnect-Server -Servers $SourceServersHostNames
+	$SessionOptions = New-PSSessionOption -NoMachineProfile -OpenTimeout 30000 -OperationTimeout 30000 -SkipRevocationCheck
+	$SourceServersHostNames | New-PsSession -EnableNetworkAccess -SessionOption $SessionOptions | Out-Null
+	$SourceServersHostNames = $Null
 	
 	Function ffTestPort {
 		[CmdletBinding()]
