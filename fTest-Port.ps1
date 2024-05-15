@@ -1,4 +1,3 @@
-﻿
 Function fTest-Port {
 	<#
 		.NOTES
@@ -115,10 +114,6 @@ Function fTest-Port {
 			[Array]$SourceServersHostNames += ((Resolve-DnsName $SourceServer).Name).Split('.')[0]
 		}
 	}
-	
-	$SessionOptions = New-PSSessionOption -NoMachineProfile -OpenTimeout 30000 -OperationTimeout 30000 -SkipRevocationCheck
-	$SourceServersHostNames | New-PsSession -EnableNetworkAccess -SessionOption $SessionOptions | Out-Null
-	$SourceServersHostNames = $Null
 	
 	Function ffTestPort {
 		[CmdletBinding()]
@@ -239,7 +234,7 @@ Function fTest-Port {
 				Try {
 					$UpdatedPortMatrix = Invoke-Command -ComputerName $SourceServer -Argumentlist $SourceServer,$UpdatedPortMatrix,$HostIpTable -ScriptBlock $CheckPortScriptBlock -ErrorAction Stop
 				} Catch {
-					Write-Host "`nCannot connect to Remote Server `'$SourceServer`'. WinRM Port 5985 is may be closed. Cannot execute Invoke-Command on Remote Server." -f Yellow
+					Write-Host "`n`rCannot connect to Remote Server `'$SourceServer`'. WinRM Port 5985 is may be closed. Cannot execute Invoke-Command on Remote Server." -f Yellow
 					<#
 					$Continue = Read-Host "Do you want to Continue Testing Ports? Source Server `'$SourceServer`' will be ignored... (Y/N)"
 					If ($Continue -notmatch "[yYjJ]") {Break}
@@ -296,7 +291,7 @@ Function fTest-Port {
 					}
 					$FinalResult += $Obj
 				}
-				fWrite-Info -cr "Checking Ports using 'Test-NetConnection' Methode`n" -f Cyan
+				Write-Host "`n`rINFO: Checking Ports using 'Test-NetConnection' Methode`n`r" -f Cyan
 			} ElseIf (($SourceServersHostNames -ne $Env:COMPUTERNAME) -AND (($TargetServers | Measure).Count -eq 1) -AND (($TargetPorts | Measure).Count -le 5)) {
 				$FinalResult = @()
 				ForEach ($SourceServer in $SourceServersHostNames) {
@@ -341,7 +336,7 @@ Function fTest-Port {
 						$FinalResult += $Obj
 					}
 				}
-				fWrite-Info -cr "Checking Ports using 'Test-NetConnection' Methode`n" -f Cyan
+				Write-Host "`n`rChecking Ports using 'Test-NetConnection' Methode`n`r" -f Cyan
 			} Else {
 				$SourceHosts = $SourceServersHostNames | ForEach {
 					If ($_ -notmatch $RegexIPv4Pattern) {
@@ -368,7 +363,7 @@ Function fTest-Port {
 				} Else {
 					$FinalResult = ffTestPort -SourceHosts $SourceHosts -TargetHosts $TargetHosts -TargetPorts $TargetPorts
 				}
-				fWrite-Info -cr "Checking Ports using '.NET TCP Client' Methode`n" -f Cyan
+				Write-Host "`n`rChecking Ports using '.NET TCP Client' Methode`n" -f Cyan
 			}
 		}
 		"AllPorts" {
@@ -418,7 +413,7 @@ Function fTest-Port {
 				}
 				Write-Progress -Activity "Checking Port-Range from $($PortRange[0]) to $($PortRange[-1]) on Server $($TargetServer.ToUpper()). Please wait..." -Completed
 			}
-			fWrite-Info -cr "Checking Ports using '.NET TCP Client' Methode`n" -f Cyan
+			Write-Host "`n`rChecking Ports using '.NET TCP Client' Methode`n`r" -f Cyan
 		}
 	}
 
