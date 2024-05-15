@@ -35,7 +35,7 @@ Function fTest-Port {
 		
 		.PARAMETER ExportResultAsCsv
 			At the End of the Checks, the Result will be Displayed as Table on Console and also will be exported 
-			as CSV under `'$Logs\`'$Date -  - Check Ports.csv`'.
+			as CSV under '$Date - Check Ports.csv`.
 		
 		.PARAMETER Timeout
 			Define the Timeout in Miliseconds to wait after TCP Client try to Connect to Target Server until the the Script will 
