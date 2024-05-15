@@ -42,8 +42,8 @@ Function fTest-Port {
 			check from Status `'Connected`'. Default is 10 ms.
 		
 		.EXAMPLE
-			fTest-Port $ExMbxServers
-			Test Well Known Ports 80,135,443,445 and 5985 from Localhost to all Exchange MailboxServers.
+			fTest-Port LAB-SRV-01,LAB-SRV-02,LAB-SRV-03,LAB-SRV-04
+			Test Well Known Ports 80,135,443,445 and 5985 from Localhost to all SRV Servers.
 		
 		.EXAMPLE
 			fTest-Port -SourceServers LAB-MGT-01,LAB-MGT-02 -TargetServers (1..8 | ForEach {"LAB-EX-0$_"}) -TargetPorts @(1..1024) -ExportResultAsCsv
